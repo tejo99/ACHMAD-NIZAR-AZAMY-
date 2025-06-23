@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Rubik 3x3 Sederhana</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #222;
+      color: #fff;
+    }
+    table {
+      margin: 20px auto;
+      border-spacing: 5px;
+    }
+    td {
+      width: 60px;
+      height: 60px;
+      border: 2px solid #000;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Rubik 3x3 Sederhana</h1>
+  <table id="rubik"></table>
+
+  <div>
+    <h3>Putar Baris</h3>
+    <button onclick="rotateRowLeft(0)">Baris 1 Kiri</button>
+    <button onclick="rotateRowRight(0)">Baris 1 Kanan</button><br>
+    <button onclick="rotateRowLeft(1)">Baris 2 Kiri</button>
+    <button onclick="rotateRowRight(1)">Baris 2 Kanan</button><br>
+    <button onclick="rotateRowLeft(2)">Baris 3 Kiri</button>
+    <button onclick="rotateRowRight(2)">Baris 3 Kanan</button>
+  </div>
+
+  <div>
+    <h3>Putar Kolom</h3>
+    <button onclick="rotateColUp(0)">Kolom 1 Naik</button>
+    <button onclick="rotateColDown(0)">Kolom 1 Turun</button><br>
+    <button onclick="rotateColUp(1)">Kolom 2 Naik</button>
+    <button onclick="rotateColDown(1)">Kolom 2 Turun</button><br>
+    <button onclick="rotateColUp(2)">Kolom 3 Naik</button>
+    <button onclick="rotateColDown(2)">Kolom 3 Turun</button>
+  </div>
+
+  <script>
+    const colors = ['white', 'red', 'blue', 'orange', 'green', 'yellow'];
+
+    // Buat rubik 3x3 acak
+    let rubik = Array.from({ length: 3 }, () =>
+      Array.from({ length: 3 }, () => colors[Math.floor(Math.random() * colors.length)])
+    );
+
+    function renderRubik() {
+      const table = document.getElementById('rubik');
+      table.innerHTML = '';
+      for (let row = 0; row < 3; row++) {
+        const tr = document.createElement('tr');
+        for (let col = 0; col < 3; col++) {
+          const td = document.createElement('td');
+          td.style.backgroundColor = rubik[row][col];
+          tr.appendChild(td);
+        }
+        table.appendChild(tr);
+      }
+    }
+
+    function rotateRowLeft(row) {
+      rubik[row] = rubik[row].slice(1).concat(rubik[row][0]);
+      renderRubik();
+    }
+
+    function rotateRowRight(row) {
+      rubik[row] = [rubik[row][2]].concat(rubik[row].slice(0, 2));
+      renderRubik();
+    }
+
+    function rotateColUp(col) {
+      const temp = rubik[0][col];
+      rubik[0][col] = rubik[1][col];
+      rubik[1][col] = rubik[2][col];
+      rubik[2][col] = temp;
+      renderRubik();
+    }
+
+    function rotateColDown(col) {
+      const temp = rubik[2][col];
+      rubik[2][col] = rubik[1][col];
+      rubik[1][col] = rubik[0][col];
+      rubik[0][col] = temp;
+      renderRubik();
+    }
+
+    renderRubik();
+  </script>
+
+</body>
+</html>
